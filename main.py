@@ -1,16 +1,38 @@
-# This is a sample Python script.
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# x_i = number of items ; y_i = their price
+x = np.array([1, 3, 5, 6, 10, 100], dtype=float)
+y = np.array([3, 10, 20, 40, 100, 1000], dtype=float)
 
+# Training
+m = x.shape[0]
+w, b = 0.0, 0.0
+alpha = 1e-4
+iters = 1000000
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+for _ in range(iters):
+    f = w * x + b
+    grad_w = (1/m) * np.sum((f - y) * x)
+    grad_b = (1/m) * np.sum(f - y)
+    w -= alpha * grad_w
+    b -= alpha * grad_b
 
+x_i = 15
+f_i = w * x_i + b
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+x = np.append(x, x_i)
+y = np.append(y, f_i)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Run the graph
+plt.plot(x, y, 'o', label="data")
+xx = np.linspace(x.min(), x.max(), 200)
+plt.plot(xx, w * xx + b, label="fit")
+plt.plot([x_i], [f_i], 'o', label="prediction")
+
+plt.xlabel("Number of Items")
+plt.ylabel("Price of Items")
+plt.title("Practice Graph")
+plt.legend()
+
+plt.show()
